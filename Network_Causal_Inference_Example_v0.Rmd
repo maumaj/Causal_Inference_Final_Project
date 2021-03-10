@@ -9,6 +9,7 @@ output: html_document
 library(tidyverse)
 library(dplyr)
 library(ggplot2)
+library(igraph)
 ```
 
 
@@ -23,7 +24,7 @@ student_df %>% group_by(SCHTREAT) %>% count(SCHTREAT)
 ```
 
 ```{r}
-student_df2 <- student_df %>% filter (SCHTREAT == "(1) Treatment school (Roots meetings 2012-2013)") %>% drop_na(TREAT)
+student_df2 <- student_df %>% filter (SCHTREAT == "(1) Treatment school (Roots meetings 2012-2013)") %>% drop_na(TREAT) %>% drop_na(UID)
 
 student_df2  %>% group_by(SCHID,TREAT) %>% count(TREAT)
 ```
@@ -36,5 +37,33 @@ student_df2  %>% group_by(SCHID,SIMPLE_TRT) %>% count(SIMPLE_TRT)
 
 ```{r}
 student_df2[,c("UID","SCHID","ID","SCHRB","ST1", "ST2","ST3","ST4","ST5","ST6","ST7","ST8","ST9","ST10","CN1","CN2","CN3","CN4","CN5","BF1","BF2")]
+```
+
+```{r}
+student_edges.df <- student_df2[,c("SCHID","ID","ST1", "ST2","ST3","ST4","ST5","ST6","ST7","ST8","ST9","ST10","CN1","CN2","CN3","CN4","CN5","BF1","BF2")]
+names(student_edges.df)<- c("SCHID","ID","RST1", "RST2","RST3","RST4","RST5","RST6","RST7","RST8","RST9","RST10","RCN1","RCN2","RCN3","RCN4","RCN5","RBF1","RBF2")
+#student_edges.list <- split(student_edges.df, seq(nrow(student_edges.df)))
+#student_edges.list
+
+student_edges.df <- student_edges.df %>% tidyr::pivot_longer(
+  cols = starts_with("R"),
+  names_to = "STUDENT_REL",
+  values_to = "STUDENT_REL_ID"
+)
+
+student_edges.df$STUDENT_REL_ID <- as.factor(student_edges.df$STUDENT_REL_ID)
+
+student_edges.df
+```
+
+```{r}
+student_edges_s1.df <- student_edges.df %>% filter(SCHID == 1)
+student_edges_s1.df <- student_edges_s1.df[,c("ID","STUDENT_REL_ID")]
+
+student_edges_s1.df
+```
+
+```{r}
+
 ```
 
