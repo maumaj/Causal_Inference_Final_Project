@@ -49,7 +49,7 @@ student_edges.df <- student_edges.df %>% tidyr::pivot_longer(
   cols = starts_with("R"),
   names_to = "STUDENT_REL",
   values_to = "STUDENT_REL_ID"
-)
+) %>% drop_na()
 
 student_edges.df$STUDENT_REL_ID <- as.factor(student_edges.df$STUDENT_REL_ID)
 
@@ -64,6 +64,25 @@ student_edges_s1.df
 ```
 
 ```{r}
+school1.graph <- graph_from_edgelist(as.matrix(student_edges_s1.df), directed=FALSE)
+
+summary(school1.graph)
+```
+
+```{r}
+edge_density(school1.graph)
+```
+
+```{r}
+igraph_options(vertex.size = 3, vertex.label = NA, edge.arrow.size = 0.5)
+plot(school1.graph, layout = layout_in_circle)
+```
+```{r}
+plot(school1.graph, layout = layout_with_fr)
+```
+
+```{r}
+plot(school1.graph, layout = layout_with_kk)
 
 ```
 
