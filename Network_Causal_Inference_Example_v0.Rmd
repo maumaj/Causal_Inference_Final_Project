@@ -6,6 +6,7 @@ output: html_document
 ---
 
 ```{r}
+library(tidyverse)
 library(dplyr)
 library(ggplot2)
 ```
@@ -22,6 +23,18 @@ student_df %>% group_by(SCHTREAT) %>% count(SCHTREAT)
 ```
 
 ```{r}
-student_df2 <- student_df %>% filter (SCHTREAT == "(1) Treatment school (Roots meetings 2012-2013)")
+student_df2 <- student_df %>% filter (SCHTREAT == "(1) Treatment school (Roots meetings 2012-2013)") %>% drop_na(TREAT)
+
+student_df2  %>% group_by(SCHID,TREAT) %>% count(TREAT)
+```
+
+```{r}
+student_df2$SIMPLE_TRT <- ifelse(student_df2$TREAT == "(1) Treatment", "(1) Treatment", "(2) Control")
+
+student_df2  %>% group_by(SCHID,SIMPLE_TRT) %>% count(SIMPLE_TRT)
+```
+
+```{r}
+student_df2[,c("UID","SCHID","ID","SCHRB","ST1", "ST2","ST3","ST4","ST5","ST6","ST7","ST8","ST9","ST10","CN1","CN2","CN3","CN4","CN5","BF1","BF2")]
 ```
 
