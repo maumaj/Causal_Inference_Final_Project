@@ -1,0 +1,27 @@
+---
+title: "Causal Inference -- Network Tutorial"
+author: "Tyler Maule"
+date: "3/10/2021"
+output: html_document
+---
+
+```{r}
+library(dplyr)
+library(ggplot2)
+```
+
+
+```{r}
+load("ICPSR_37070_2/DS0001/df_37070_0001_Data.rda")
+student_df <- da37070.0001
+head(student_df,10)
+```
+
+```{r}
+student_df %>% group_by(SCHTREAT) %>% count(SCHTREAT)
+```
+
+```{r}
+student_df2 <- student_df %>% filter (SCHTREAT == "(1) Treatment school (Roots meetings 2012-2013)")
+```
+
